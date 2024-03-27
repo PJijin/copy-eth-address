@@ -37,9 +37,10 @@ export default function Home() {
         <div>
           <TextArea
             size="2"
+            aria-multiline
             rows={20}
             placeholder="Paste Bulk ETH Address"
-            className="w-full"
+            className="w-full border"
             onChange={(e) => setAddressList(e.target.value)}
             value={addressList}
           />
@@ -48,7 +49,10 @@ export default function Home() {
               onClick={() => {
                 setOutputlist(
                   addressList.split("\n").map((address) => {
-                    return address.toLocaleLowerCase().trim();
+                    if (ethers.isAddress(address.trim())) {
+                      return address.toLocaleLowerCase().trim();
+                    }
+                    return ``;
                   })
                 );
               }}
@@ -60,7 +64,10 @@ export default function Home() {
               onClick={() => {
                 setOutputlist(
                   addressList.split("\n").map((address) => {
-                    return address.toLocaleUpperCase().trim();
+                    if (ethers.isAddress(address.trim())) {
+                      return address.toLocaleUpperCase().trim();
+                    }
+                    return ``;
                   })
                 );
               }}
@@ -72,7 +79,10 @@ export default function Home() {
               onClick={() => {
                 setOutputlist(
                   addressList.split("\n").map((address) => {
-                    return shortenAddress(address.trim()) as string;
+                    if (ethers.isAddress(address.trim())) {
+                      return shortenAddress(address.trim()) as string;
+                    }
+                    return ``;
                   })
                 );
               }}
@@ -84,7 +94,10 @@ export default function Home() {
               onClick={() => {
                 setOutputlist(
                   addressList.split("\n").map((address) => {
-                    return ethers.getAddress(address.trim());
+                    if (ethers.isAddress(address.trim())) {
+                      return ethers.getAddress(address.trim());
+                    }
+                    return ``;
                   })
                 );
               }}
@@ -98,6 +111,7 @@ export default function Home() {
           <TextArea
             rows={20}
             size="2"
+            aria-multiline
             value={(output as string[])?.join("\n")}
             placeholder=""
             readOnly
